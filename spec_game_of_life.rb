@@ -8,13 +8,13 @@ describe 'game of life' do
             subject.is_a?(World).should be true
         end
 
-        it 'should respond to proper methods' do
+        it 'should respond to proper attr accessor methods for rows, cols, cell_grid' do
             subject.should respond_to(:rows)
             subject.should respond_to(:cols)
             subject.should respond_to(:cell_grid)            
         end
 
-        it 'should create array grid on init' do
+        it 'should create array grid containing Cell objects' do
             subject.cell_grid.is_a?(Array).should be true
             subject.cell_grid.each do |row|
                 row.is_a?(Array).should be true
