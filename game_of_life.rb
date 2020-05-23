@@ -9,16 +9,29 @@ class Game
     end
 
     def tick!
+        next_round_dead = []
+        next_round_alive = []
         @world.cell_grid.each do |cell|
             if world.live_neighbors_around_cell(cell).count < 2 && cell.alive?
-                cell.die 
+                next_round_dead << cell
+            end
+            if (world.live_neighbors_around_cell(cell).count == 2 
+                    || world.live_neighbors_around_cell(cell).count == 3)  
+                    && cell.alive?
+                next_round_alive << cell
             end
             if world.live_neighbors_around_cell(cell).count > 3 && cell.alive?
-                cell.die 
+                next_round_dead << cell
             end
             if world.live_neighbors_around_cell(cell).count == 3 && cell.dead?
-                cell.birth
+                next_round_alive << cell
             end
+        end
+        next_round_alive.each do |cell|
+            cell.birth!
+        end
+        next_round_dead.each do |cell|
+            cell.die!
         end
     end
 
@@ -100,11 +113,11 @@ class Cell
         !@alive
     end
 
-    def die
+    def die!
         @alive = false
     end
 
-    def birth
+    def birth!
         @alive = true
     end
 end
