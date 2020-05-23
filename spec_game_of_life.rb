@@ -1,5 +1,7 @@
 require 'rspec'
 require_relative "game_of_life.rb"
+
+
 describe 'game of life' do 
 
     let!(:world) { World.new }
@@ -13,7 +15,8 @@ describe 'game of life' do
         it 'should respond to proper attr accessor methods for rows, cols, cell_grid' do
             subject.should respond_to(:rows)
             subject.should respond_to(:cols)
-            subject.should respond_to(:cell_grid)            
+            subject.should respond_to(:cell_grid)
+            subject.should respond_to(:live_neighbors_around_cell)            
         end
 
         it 'should create array grid containing Cell objects' do
@@ -26,6 +29,13 @@ describe 'game of life' do
             end
         end
 
+        it "should detect a neighbor to the north && north east" do 
+            subject.cell_grid[0][1].should be_dead
+            subject.cell_grid[0][1].alive = true
+            subject.cell_grid[0][1].should be_alive
+            subject.live_neighbors_around_cell(subject.cell_grid[1][1]).count.should == 1
+            subject.live_neighbors_around_cell(subject.cell_grid[1][0]).count.should == 1
+        end
     end
 
     context "Cell" do
@@ -76,6 +86,10 @@ describe 'game of life' do
         let!(:game) { Game.new }
         context "Rule 1: Any live cell with fewer than two live neighbours dies, as if by underpopulation." do 
             it "should kill a live cell with one live neighbor" do
+                game = Game.new(world, [[1,0], [2,0]])
+                game.tick! 
+                world.cell_grid[1][0].should be_dead
+                world.cell_grid[2][0].should be_dead
             end
         end
     end
