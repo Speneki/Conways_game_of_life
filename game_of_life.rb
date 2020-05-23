@@ -15,9 +15,7 @@ class Game
             if world.live_neighbors_around_cell(cell).count < 2 && cell.alive?
                 next_round_dead << cell
             end
-            if (world.live_neighbors_around_cell(cell).count == 2 
-                    || world.live_neighbors_around_cell(cell).count == 3)  
-                    && cell.alive?
+            if (world.live_neighbors_around_cell(cell).count == 2 || world.live_neighbors_around_cell(cell).count == 3) && cell.alive?
                 next_round_alive << cell
             end
             if world.live_neighbors_around_cell(cell).count > 3 && cell.alive?
