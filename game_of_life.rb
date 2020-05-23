@@ -11,17 +11,18 @@ class Game
     def tick!
         next_round_dead = []
         next_round_alive = []
-        @world.cell_grid.each do |cell|
-            if world.live_neighbors_around_cell(cell).count < 2 && cell.alive?
+        @world.cells.each do |cell|
+            count = self.world.live_neighbors_around_cell(cell).count
+            if count < 2 && cell.alive?
                 next_round_dead << cell
             end
-            if (world.live_neighbors_around_cell(cell).count == 2 || world.live_neighbors_around_cell(cell).count == 3) && cell.alive?
+            if (count == 2 || count == 3) && cell.alive?
                 next_round_alive << cell
             end
-            if world.live_neighbors_around_cell(cell).count > 3 && cell.alive?
+            if  count> 3 && cell.alive?
                 next_round_dead << cell
             end
-            if world.live_neighbors_around_cell(cell).count == 3 && cell.dead?
+            if count == 3 && cell.dead?
                 next_round_alive << cell
             end
         end
@@ -41,11 +42,22 @@ class World
         @rows = rows
         @cols = cols
         @cells = []
+
+
         @cell_grid = Array.new(rows) do |row|
                         Array.new(cols) do |col|
                             Cell.new(col, row)
                         end
                     end
+
+
+        @cell_grid.each do |row|
+            row.each do |element|
+                if element.is_a?(Cell)
+                    cells << element
+                end
+            end
+        end
     end
 
     def live_neighbors_around_cell(cell)
@@ -91,6 +103,15 @@ class World
             live_neighbors << candidate if candidate.alive?
         end
         live_neighbors
+    end
+
+    def live_cells
+        cells.select { |cell| cell.alive }
+    end
+    def randomly_populate
+        cells.each do |cell|
+            cell.alive = [true, false].sample
+        end
     end
 end
 
