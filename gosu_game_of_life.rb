@@ -2,7 +2,7 @@ require 'gosu'
 require_relative 'game_of_life'
 
 class GameWindow < Gosu::Window
-    def initialize(height = 800, width=600 )
+    def initialize(height = 1200, width=1400 )
         @height = height
         @width = width
         super height, width, false
